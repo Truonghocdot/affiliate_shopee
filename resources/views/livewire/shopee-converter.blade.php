@@ -72,18 +72,13 @@ new class extends Component
                 'headers' => [
                     'Cookie' => $rawCookie,
                     'csrf-token' => $csrfToken,
-                    'X-Csrftoken' => $csrfToken, // Giữ luôn cả X-Csrftoken phòng ngừa
                     'User-Agent' => $userAgent,
-                    // Bổ sung các header cần thiết để bypass Shopee WAF/403 Error
-                    'Accept' => 'application/json',
-                    'Accept-Language' => 'vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7',
+                    'Accept' => 'application/json, text/plain, */*',
+                    'Accept-Language' => 'en-US,en;q=0.9,vi;q=0.8',
+                    'Affiliate-Program-Type' => '1',
+                    'Content-Type' => 'application/json; charset=UTF-8',
                     'Origin' => 'https://affiliate.shopee.vn',
-                    'Referer' => 'https://affiliate.shopee.vn/offer/custom_link',
-                    'Content-Type' => 'application/json',
-                    'Sec-Ch-Ua' => '"Chromium";v="145", "Not:A-Brand";v="99"',
-                    'Sec-Fetch-Dest' => 'empty',
-                    'Sec-Fetch-Mode' => 'cors',
-                    'Sec-Fetch-Site' => 'same-origin',
+                    'Referer' => 'https://affiliate.shopee.vn/offer/custom_link'
                 ],
                 'json' => [
                     'operationName' => 'batchGetCustomLink',
