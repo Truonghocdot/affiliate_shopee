@@ -48,16 +48,20 @@ new class extends Component
             return;
         }
 
-        // Tách csrftoken từ Cookie (Shopee Affiliate đôi khi dùng SPC_F đóng vai trò CSRF)
+        // Tách csrftoken, đôi khi Shopee yêu cầu header name khác (csrf-token)
         $csrfToken = '';
         if (preg_match('/csrftoken\s*=\s*([^;]+)/i', $rawCookie, $matches)) {
             $csrfToken = trim($matches[1]);
         } elseif (preg_match('/SPC_F\s*=\s*([^;]+)/i', $rawCookie, $matches)) {
             $csrfToken = trim($matches[1]);
+            $rawCookie .= '; csrftoken=' . $csrfToken;
+        } else {
+            $csrfToken = \Illuminate\Support\Str::random(32);
+            $rawCookie .= '; csrftoken=' . $csrfToken;
         }
 
         if (empty($csrfToken)) {
-            $this->errorMessage = 'Có lỗi xảy ra vui lòng thử lại sau';
+            $this->errorMessage = 'Có lỗi xảy ra vui lòng thử lại sau.';
             return;
         }
 
@@ -67,10 +71,19 @@ new class extends Component
             $response = $client->post('https://affiliate.shopee.vn/api/v3/gql?q=batchCustomLink', [
                 'headers' => [
                     'Cookie' => $rawCookie,
-                    'X-Csrftoken' => $csrfToken,
+                    'csrf-token' => $csrfToken,
+                    'X-Csrftoken' => $csrfToken, // Giữ luôn cả X-Csrftoken phòng ngừa
                     'User-Agent' => $userAgent,
+                    // Bổ sung các header cần thiết để bypass Shopee WAF/403 Error
+                    'Accept' => 'application/json',
+                    'Accept-Language' => 'vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7',
+                    'Origin' => 'https://affiliate.shopee.vn',
                     'Referer' => 'https://affiliate.shopee.vn/offer/custom_link',
                     'Content-Type' => 'application/json',
+                    'Sec-Ch-Ua' => '"Chromium";v="145", "Not:A-Brand";v="99"',
+                    'Sec-Fetch-Dest' => 'empty',
+                    'Sec-Fetch-Mode' => 'cors',
+                    'Sec-Fetch-Site' => 'same-origin',
                 ],
                 'json' => [
                     'operationName' => 'batchGetCustomLink',
@@ -103,8 +116,14 @@ new class extends Component
             } else {
                 $failCode = $result['data']['batchCustomLink'][0]['failCode'] ?? 'Unknown';
                 $this->errorMessage = "Lỗi từ Shopee: $failCode. Có thể Cookie hệ thống đã hết hạn.";
+                \Illuminate\Support\Facades\Log::error("Shopee API Failed: " . json_encode($result));
             }
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            $responseBody = $e->getResponse()->getBody()->getContents();
+            \Illuminate\Support\Facades\Log::error('Shopee API Error (ClientException)', ['body' => $responseBody]);
+            $this->errorMessage = 'Shopee API báo lỗi chặn (403/4xx): ' . $responseBody;
         } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Shopee API Connection Error', ['message' => $e->getMessage()]);
             $this->errorMessage = 'Lỗi kết nối: ' . $e->getMessage();
         }
     }
