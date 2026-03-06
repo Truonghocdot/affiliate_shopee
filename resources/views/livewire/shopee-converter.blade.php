@@ -50,12 +50,12 @@ new class extends Component
 
         // Tách csrftoken từ Cookie
         $csrfToken = '';
-        if (preg_match('/csrftoken=([^;]+)/', $rawCookie, $matches)) {
-            $csrfToken = $matches[1];
+        if (preg_match('/csrftoken\s*=\s*([^;]+)/i', $rawCookie, $matches)) {
+            $csrfToken = trim($matches[1]);
         }
 
         if (empty($csrfToken)) {
-            $this->errorMessage = 'Cấu hình hệ thống lỗi (không tìm thấy csrftoken). Vui lòng liên hệ Admin.';
+            $this->errorMessage = 'Có lỗi xảy ra vui lòng thử lại sau';
             return;
         }
 
