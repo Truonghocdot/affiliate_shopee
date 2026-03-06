@@ -30,7 +30,7 @@ class LoginController extends Controller
 
             Auth::login($user);
 
-            return redirect('/');
+            return redirect()->route('converter');
         } catch (\Exception $e) {
             return redirect('/')->with('error', 'Google login failed.');
         }

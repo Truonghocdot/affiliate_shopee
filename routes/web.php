@@ -4,6 +4,9 @@ use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('converter');
+    }
     return view('welcome');
 });
 
@@ -20,6 +23,7 @@ Route::get('admin/settings', function () {
 
 // Protected Routes
 Route::middleware('auth')->group(function () {
-    // The Livewire component will be used inside a layout or welcome page.
-    // For now, let's keep it simple and just use the welcome page.
+    Route::get('/converter', function () {
+        return view('converter');
+    })->name('converter');
 });

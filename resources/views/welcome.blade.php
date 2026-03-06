@@ -95,37 +95,6 @@
 
     <!-- Hero Section / Content -->
     <main class="min-h-[80vh] flex flex-col items-center py-12 px-4">
-        @auth
-        <div class="w-full max-w-4xl space-y-12">
-            <header class="text-center space-y-4">
-                <h1 class="text-4xl font-extrabold tracking-tight">Công Cụ <span class="gradient-text">Chuyển Đổi</span></h1>
-                <p class="text-gray-500 font-medium">Đã đăng nhập: {{ Auth::user()->email }}</p>
-            </header>
-
-            <livewire:shopee-converter />
-
-            <!-- Contact Card -->
-            <div class="max-w-xl mx-auto bg-gradient-to-r from-gray-900 to-black p-8 rounded-3xl text-white shadow-2xl relative overflow-hidden group">
-                <div class="absolute -right-12 -top-12 w-40 h-40 bg-[#ee4d2d] rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                <div class="relative z-10 flex flex-col sm:flex-row items-center gap-6">
-                    <div class="bg-white/10 p-4 rounded-2xl backdrop-blur-md">
-                        <svg class="w-10 h-10 text-[#ee4d2d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                        </svg>
-                    </div>
-                    <div class="text-center sm:text-left">
-                        <h3 class="text-xl font-bold">Nâng cấp bản PRO không giới hạn?</h3>
-                        <p class="text-gray-400 text-sm mt-1">Liên hệ chính chủ để mua bản đầy đủ chức năng.</p>
-                        <div class="mt-4 flex flex-wrap justify-center sm:justify-start gap-4">
-                            <a href="tel:0327182537" class="bg-[#ee4d2d] px-6 py-2 rounded-full font-bold text-sm shadow-lg hover:shadow-orange-500/20 transition-all">
-                                0327.182.537 (Trường)
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @else
         <!-- Landing for Guest -->
         <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div class="space-y-10 order-2 lg:order-1">
@@ -170,7 +139,6 @@
                 <img src="{{ asset('images/shopee-hero.png') }}" alt="Shopee Affiliate Illustration" class="relative rounded-[2.5rem] shadow-2xl border border-white/10 w-full animate-fade-in transition-all hover:scale-[1.02] duration-500">
             </div>
         </div>
-        @endauth
     </main>
 
     <!-- Footer -->
