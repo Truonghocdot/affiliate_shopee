@@ -25,7 +25,7 @@ class LoginController extends Controller
                 'name' => $googleUser->name,
                 'email' => $googleUser->email,
                 'avatar' => $googleUser->avatar,
-                // No password needed for social login
+                'password' => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(24)),
             ]);
 
             Auth::login($user);
