@@ -100,7 +100,7 @@
                 <p class="text-gray-500 font-medium">Đã đăng nhập: {{ Auth::user()->email }}</p>
             </header>
 
-            <livewire:⚡shopee-converter />
+            <livewire:shopee-converter />
 
             <!-- Contact Card -->
             <div class="max-w-xl mx-auto bg-gradient-to-r from-gray-900 to-black p-8 rounded-3xl text-white shadow-2xl relative overflow-hidden group">
