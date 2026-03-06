@@ -112,6 +112,12 @@
                     Converter.
                 </h1>
 
+                @if(session('error'))
+                <div class="px-6 py-4 bg-red-50 border border-red-200 text-red-600 rounded-2xl font-bold">
+                    {{ session('error') }}
+                </div>
+                @endif
+
                 <p class="text-xl text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
                     Tối ưu hóa thu nhập thụ động với công cụ rút gọn link Shopee chuyên nghiệp.
                     Tự động xử lý Cookie, SubID và API nội bộ.

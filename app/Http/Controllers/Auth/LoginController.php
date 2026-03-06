@@ -32,7 +32,8 @@ class LoginController extends Controller
 
             return redirect()->route('converter');
         } catch (\Exception $e) {
-            return redirect('/')->with('error', 'Google login failed.');
+            \Illuminate\Support\Facades\Log::error('Google Login Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return redirect('/')->with('error', 'Google login failed: ' . $e->getMessage());
         }
     }
 
