@@ -48,9 +48,11 @@ new class extends Component
             return;
         }
 
-        // Tách csrftoken từ Cookie
+        // Tách csrftoken từ Cookie (Shopee Affiliate đôi khi dùng SPC_F đóng vai trò CSRF)
         $csrfToken = '';
         if (preg_match('/csrftoken\s*=\s*([^;]+)/i', $rawCookie, $matches)) {
+            $csrfToken = trim($matches[1]);
+        } elseif (preg_match('/SPC_F\s*=\s*([^;]+)/i', $rawCookie, $matches)) {
             $csrfToken = trim($matches[1]);
         }
 
