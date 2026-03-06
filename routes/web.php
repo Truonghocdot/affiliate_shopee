@@ -8,6 +8,7 @@ Route::get('/', function () {
 });
 
 // Authentication Routes
+Route::get('login', [LoginController::class, 'redirectToGoogle'])->name('login');
 Route::get('login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('login/google/callback', [LoginController::class, 'handleGoogleCallback']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
