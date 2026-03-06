@@ -42,6 +42,7 @@ new class extends Component
         // Lấy Cookie và User-Agent từ Admin Settings
         $rawCookie = Setting::get('shopee_cookie');
         $userAgent = Setting::get('shopee_user_agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+        $manualCsrfToken = Setting::get('shopee_csrf_token', '');
 
         if (empty($rawCookie)) {
             $this->errorMessage = 'Hệ thống chưa được cấu hình Cookie. Vui lòng liên hệ Admin.';
@@ -50,7 +51,12 @@ new class extends Component
 
         // Tách csrftoken, đôi khi Shopee yêu cầu header name khác (csrf-token)
         $csrfToken = '';
-        if (preg_match('/csrftoken\s*=\s*([^;]+)/i', $rawCookie, $matches)) {
+
+        // Ưu tiên token nhập tay từ Admin
+        if (!empty($manualCsrfToken)) {
+            $csrfToken = trim($manualCsrfToken);
+            $rawCookie .= '; csrftoken=' . $csrfToken;
+        } elseif (preg_match('/csrftoken\s*=\s*([^;]+)/i', $rawCookie, $matches)) {
             $csrfToken = trim($matches[1]);
         } elseif (preg_match('/SPC_F\s*=\s*([^;]+)/i', $rawCookie, $matches)) {
             $csrfToken = trim($matches[1]);

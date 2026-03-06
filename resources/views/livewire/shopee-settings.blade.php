@@ -7,6 +7,7 @@ new class extends Component
 {
     public $password = '';
     public $shopee_cookie = '';
+    public $shopee_csrf_token = '';
     public $shopee_user_agent = '';
 
     public $isUnlocked = false;
@@ -15,6 +16,7 @@ new class extends Component
     public function mount()
     {
         $this->shopee_cookie = Setting::get('shopee_cookie', '');
+        $this->shopee_csrf_token = Setting::get('shopee_csrf_token', '');
         $this->shopee_user_agent = Setting::get('shopee_user_agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
     }
 
@@ -33,6 +35,7 @@ new class extends Component
         if (!$this->isUnlocked) return;
 
         Setting::set('shopee_cookie', $this->shopee_cookie);
+        Setting::set('shopee_csrf_token', $this->shopee_csrf_token);
         Setting::set('shopee_user_agent', $this->shopee_user_agent);
 
         $this->statusMessage = 'Đã lưu cấu hình thành công!';
@@ -74,6 +77,13 @@ new class extends Component
                     <textarea wire:model="shopee_cookie" rows="10" placeholder="Dán Shopee Cookie dùng chung tại đây..."
                         class="w-full px-4 py-4 rounded-2xl bg-gray-50 dark:bg-gray-800 border-none outline-none focus:ring-2 focus:ring-[#ee4d2d] transition-all text-xs font-mono"></textarea>
                     <p class="mt-2 text-[10px] text-gray-400 italic">* Lưu ý: Cookie này sẽ được sử dụng cho TẤT CẢ khách hàng bên ngoài.</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Manual CSRF Token</label>
+                    <input type="text" wire:model="shopee_csrf_token" placeholder="Ví dụ: 6tcIBxtr-NounCLRyF1qM..."
+                        class="w-full px-4 py-4 rounded-2xl bg-gray-50 dark:bg-gray-800 border-none outline-none focus:ring-2 focus:ring-[#ee4d2d] transition-all text-sm font-medium">
+                    <p class="mt-2 text-[10px] text-gray-400 italic">* Khuyên dùng: Dán riêng giá trị csrf-token (lấy từ Header API) vào đây nếu lấy cookie không ăn.</p>
                 </div>
 
                 <div>
